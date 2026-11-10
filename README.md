@@ -124,6 +124,22 @@ client/src/
   components/            AuthForm, Dashboard, ReadingForm, Reports
 ```
 
+## Screenshots
+
+These screenshots show the sign-up and sign-in forms and the dashboard populated by the demo seed data.
+
+### Sign up
+
+![Sweety sign-up screen](docs/screenshots/01-sign-up.png)
+
+### Sign in
+
+![Sweety sign-in screen](docs/screenshots/02-sign-in.png)
+
+### Dashboard, reports, and CSV export
+
+![Sweety dashboard with glucose reports and custom-range CSV export](docs/screenshots/03-dashboard-reports-export.png)
+
 ## Notes
 
 **Assumptions**
