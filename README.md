@@ -140,6 +140,10 @@ These screenshots show the sign-up and sign-in forms and the dashboard populated
 
 ![Sweety dashboard with glucose reports and custom-range CSV export](docs/screenshots/03-dashboard-reports-export.png)
 
+### Project walkthrough
+
+[Watch the 40-second Sweety walkthrough](docs/screenshots/sweety-project-walkthrough.webm) (screen recording with chapter titles; no voice-over).
+
 ## Notes
 
 **Assumptions**
