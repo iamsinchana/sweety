@@ -15,35 +15,64 @@ and sees daily, month-to-date and previous-month reports.
 
 ## Prerequisites
 
-Node.js 18+ and PostgreSQL 14+ (or Docker).
+Node.js 18+ and PostgreSQL 14+ (or Docker Desktop). The Docker Compose setup maps PostgreSQL to port `5433` so it can run alongside a local PostgreSQL server already using `5432`.
 
 ## Setup
 
-```bash
-# 1. Database (pick one)
-docker compose up -d db          # easiest; matches .env.example
-# or create your own database and edit DATABASE_URL below
+Open PowerShell in the project folder.
 
-# 2. Server
-cd server
-cp .env.example .env             # then set JWT_SECRET to a long random string
-npm install
-npm run db:migrate               # creates the tables
-npm run db:seed                  # demo user + ~75 days of sample readings
-npm run dev                      # API on http://localhost:4000
+1. Start PostgreSQL:
 
-# 3. Client (new terminal)
-cd client
-npm install
-npm run dev                      # app on http://localhost:5173
-```
+   ```powershell
+   docker compose up -d db
+   ```
+
+   If you use your own PostgreSQL server instead, create a database and update `DATABASE_URL` below.
+
+2. Create and configure the server environment file:
+
+   ```powershell
+   Copy-Item server\.env.example server\.env
+   notepad server\.env
+   ```
+
+   In `server\.env`, replace `JWT_SECRET` with a long random value. Generate one with:
+
+   ```powershell
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+
+   Set `DATABASE_URL` to `postgres://sweety:sweety@localhost:5433/sweety` for the supplied Docker setup. Keep the generated secret private; do not commit `.env`.
+
+3. Install and start the API:
+
+   ```powershell
+   Set-Location server
+   npm install
+   npm run db:migrate
+   npm run db:seed
+   npm run dev
+   ```
+
+   Keep this terminal open. The API listens at `http://localhost:4000`.
+
+4. In a second PowerShell window, open the project folder and start the client:
+
+   ```powershell
+   Set-Location client
+   npm install
+   npm run dev
+   ```
+
+   Open `http://localhost:5173`.
 
 **Demo login:** `demo@sweety.test` / `Demo@1234`
 
 ## Tests
 
-```bash
-cd server && npm test
+```powershell
+Set-Location server
+npm test
 ```
 
 The tests use Node's built-in test runner (no extra dependencies). They cover every
