@@ -53,6 +53,32 @@ router.get('/', async (req, res) => {
   res.json({ data: rows, page, limit, total });
 });
 
+router.get('/export', async (req, res) => {
+  const { from, to } = req.query;
+  if (!isValidDateString(from) || !isValidDateString(to)) {
+    return res.status(400).json({ error: 'Choose a valid start and end date for the export.' });
+  }
+  if (from > to) {
+    return res.status(400).json({ error: 'Start date must be on or before end date.' });
+  }
+
+  const { rows } = await query(
+    `SELECT reading_date, slot, value FROM readings
+     WHERE user_id = $1 AND reading_date BETWEEN $2 AND $3
+     ORDER BY reading_date ASC, ${SLOT_SORT}`,
+    [req.userId, from, to]
+  );
+  const csvCell = (value) => `"${String(value).replace(/"/g, '""')}"`;
+  const csv = [
+    ['Date', 'Time slot', 'Glucose (mg/dL)'],
+    ...rows.map((reading) => [reading.reading_date, reading.slot, reading.value]),
+  ].map((row) => row.map(csvCell).join(',')).join('\r\n');
+
+  res.type('text/csv; charset=utf-8');
+  res.set('Content-Disposition', `attachment; filename="sweety-readings-${from}-to-${to}.csv"`);
+  res.send(`\uFEFF${csv}\r\n`);
+});
+
 router.post('/', async (req, res) => {
   const result = validateReading(req.body, today());
   if (result.error) return res.status(422).json({ error: result.error });

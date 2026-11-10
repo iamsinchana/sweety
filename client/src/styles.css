@@ -40,6 +40,18 @@ input, select {
   padding: .55rem .65rem; border: 1px solid var(--line); border-radius: 6px;
   background: var(--bg); color: var(--ink);
 }
+.password-field { position: relative; display: flex; }
+.password-field input { width: 100%; padding-right: 2.75rem; }
+.password-toggle {
+  position: absolute; top: 50%; right: .35rem; display: grid; place-items: center;
+  padding: .3rem; border: 0; background: transparent; color: var(--muted);
+  transform: translateY(-50%);
+}
+.password-toggle:hover { color: var(--ink); }
+.password-toggle svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.export-panel { display: grid; gap: .75rem; }
+.export-panel > p { margin: 0; }
+.export-panel > button { justify-self: start; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button { padding: .55rem 1rem; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
 button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }

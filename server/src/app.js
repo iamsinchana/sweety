@@ -18,6 +18,12 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 
+app.get('/', (_req, res) => res.json({
+  name: 'Sweety API',
+  status: 'ok',
+  message: 'The API is running. Open the client at http://localhost:5173.',
+  health: '/api/health',
+}));
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/auth', wrapAsync(require('./routes/auth')));
 app.use('/api/readings', wrapAsync(require('./routes/readings')));

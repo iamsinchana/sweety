@@ -28,3 +28,30 @@ export async function api(path, { method = 'GET', body } = {}) {
   }
   return data;
 }
+
+export async function downloadReadingsCsv(from, to) {
+  let res;
+  try {
+    res = await fetch(`${BASE}/readings/export?${new URLSearchParams({ from, to })}`, {
+      headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+    });
+  } catch {
+    throw new Error('Cannot reach the server. Check that it is running.');
+  }
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    const err = new Error(data.error || 'Could not download readings. Please try again.');
+    err.status = res.status;
+    throw err;
+  }
+
+  const url = URL.createObjectURL(await res.blob());
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `sweety-readings-${from}-to-${to}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

@@ -3,7 +3,7 @@
 A small web app where a person with diabetes records up to 4 blood glucose readings a day
 and sees daily, month-to-date and previous-month reports.
 
-**Stack:** Node.js + Express API · PostgreSQL · React (Vite) · JWT auth · bcrypt (bcryptjs)
+**Stack:** PERN (PostgreSQL · Express · React · Node.js) · JWT auth · bcrypt (bcryptjs)
 
 ## Features
 
@@ -11,6 +11,7 @@ and sees daily, month-to-date and previous-month reports.
 - Add, edit, delete readings (date, time slot, value in mg/dl).
 - Validation on both client and server, with the exact messages from the brief.
 - Reports: highest, lowest, average (1 decimal) and count, with a friendly empty state. The daily report lists each reading with its slot.
+- Download readings as CSV for a custom inclusive date range.
 - Bonus included: pagination on `GET /api/readings`, and a `docker-compose.yml` for PostgreSQL.
 
 ## Prerequisites
@@ -43,6 +44,8 @@ Open PowerShell in the project folder.
    ```
 
    Set `DATABASE_URL` to `postgres://sweety:sweety@localhost:5433/sweety` for the supplied Docker setup. Keep the generated secret private; do not commit `.env`.
+
+   If a real secret was ever committed, rotate it wherever it is used. Replacing it in `.env.example` does not remove it from Git history.
 
 3. Install and start the API:
 
@@ -99,6 +102,7 @@ the statistics and the timezone handling.
 | POST | `/api/auth/login` | `{ email, password }` → `{ token, user }` |
 | GET | `/api/auth/me` | Current user |
 | GET | `/api/readings` | `?date=`, `?from=&to=`, `?page=1&limit=20` → `{ data, page, limit, total }` |
+| GET | `/api/readings/export` | `?from=YYYY-MM-DD&to=YYYY-MM-DD` → CSV download for the logged-in user |
 | POST | `/api/readings` | `{ reading_date, slot, value }` |
 | PUT | `/api/readings/:id` | Same body |
 | DELETE | `/api/readings/:id` | |
