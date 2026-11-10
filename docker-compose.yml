@@ -1,10 +1,10 @@
-# Starts only PostgreSQL for local development (bonus task).
+# Starts only PostgreSQL for local development 
 services:
   db:
     image: postgres:16
     environment:
       POSTGRES_USER: sweety
-      POSTGRES_PASSWORD: sweety
+      POSTGRES_PASSWORD: <-YOUR-PASSWORD->
       POSTGRES_DB: sweety
     ports:
       - "5433:5432"
